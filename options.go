@@ -30,6 +30,8 @@ type Config struct {
 
 	noReconnect      bool
 	proxyConnFactory func(func() (*websocket.Conn, error)) func() (*websocket.Conn, error) // for testing
+
+	ignoreIDConsistency bool
 }
 
 func defaultConfig() Config {
@@ -45,7 +47,8 @@ func defaultConfig() Config {
 
 		paramEncoders: map[reflect.Type]ParamEncoder{},
 
-		httpClient: _defaultHTTPClient,
+		httpClient:          _defaultHTTPClient,
+		ignoreIDConsistency: false,
 	}
 }
 
