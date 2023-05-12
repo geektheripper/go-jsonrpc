@@ -170,6 +170,10 @@ func httpClient(ctx context.Context, addr string, namespace string, outs []inter
 
 		var resp clientResponse
 		if cr.req.ID != nil { // non-notification
+			if config.IgnoreIDConsistency {
+				resp.ID = cr.req.ID
+			}
+
 			if err := json.NewDecoder(httpResp.Body).Decode(&resp); err != nil {
 				return clientResponse{}, xerrors.Errorf("http status %s unmarshaling response: %w", httpResp.Status, err)
 			}
@@ -178,7 +182,7 @@ func httpClient(ctx context.Context, addr string, namespace string, outs []inter
 				return clientResponse{}, xerrors.Errorf("failed to response ID: %w", err)
 			}
 
-			if !config.IgnoreIDConsistency && resp.ID != cr.req.ID {
+			if resp.ID != cr.req.ID {
 				return clientResponse{}, xerrors.New("request and response id didn't match")
 			}
 		}
