@@ -178,7 +178,7 @@ func httpClient(ctx context.Context, addr string, namespace string, outs []inter
 				return clientResponse{}, xerrors.Errorf("failed to response ID: %w", err)
 			}
 
-			if !config.ignoreIDConsistency && resp.ID != cr.req.ID {
+			if !config.IgnoreIDConsistency && resp.ID != cr.req.ID {
 				return clientResponse{}, xerrors.New("request and response id didn't match")
 			}
 		}
